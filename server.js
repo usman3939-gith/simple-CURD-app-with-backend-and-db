@@ -1,35 +1,39 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
-const mongoose = require("mongoose");
-const cors = require("cors");
 const connectDB = require("./config/bdConn");
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT; // ❌ remove fallback 8080
 
 // Middleware
-app.use(cors());
+app.use(require("cors")());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// Routes
+// Health check route
+app.get("/health", (req, res) => res.json({ status: "ok" }));
+
+// Frontend route
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
+// API routes
 app.use("/api", require("./routes/entry"));
 
-// Connect DB and start server
+// Start server after DB connects
 const startServer = async () => {
     try {
-        await connectDB(); // waits for DB to connect
-        console.log(" MongoDB connected");
+        await connectDB();
+        console.log("✅ MongoDB connected");
 
-        app.listen(PORT, () => {
-            console.log(` Server running on http://localhost:${PORT}`);
+        // Listen on all network interfaces
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(`🚀 Server running on port ${PORT}`);
         });
     } catch (err) {
-        console.error(" DB connection failed:", err.message);
+        console.error("❌ DB connection failed:", err.message);
         process.exit(1);
     }
 };
