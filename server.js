@@ -7,8 +7,8 @@ const app = express();
 const PORT = process.env.PORT;
 
 if (!PORT) {
-  console.error("❌ PORT not defined in environment variables!");
-  process.exit(1); // fail early instead of hanging
+  console.error("❌ process.env.PORT is undefined! Railway requires a port.");
+  process.exit(1);
 }
 
 // Middleware
@@ -27,9 +27,10 @@ app.get("/", (req, res) => {
 // API routes
 app.use("/api", require("./routes/entry"));
 
-// Start server after DB connects
+// Connect DB and start server
 const startServer = async () => {
   try {
+    console.log("⏳ Connecting to MongoDB...");
     await connectDB();
     console.log("✅ MongoDB connected");
 
