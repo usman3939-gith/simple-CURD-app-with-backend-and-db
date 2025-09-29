@@ -22,12 +22,11 @@ app.use("/api", require("./routes/entry"));
 // Connect DB and start server
 const startServer = async () => {
     try {
-        await connectDB(); // wait until DB connects
-        mongoose.connection.once("open", () => {
-            console.log(" Connected to MongoDB");
-            app.listen(PORT, () =>
-                console.log(`🚀 Server running on http://localhost:${PORT}`)
-            );
+        await connectDB(); // waits for DB to connect
+        console.log(" MongoDB connected");
+
+        app.listen(PORT, () => {
+            console.log(` Server running on http://localhost:${PORT}`);
         });
     } catch (err) {
         console.error(" DB connection failed:", err.message);
@@ -36,3 +35,4 @@ const startServer = async () => {
 };
 
 startServer();
+
