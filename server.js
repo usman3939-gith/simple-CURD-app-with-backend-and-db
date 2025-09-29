@@ -6,7 +6,7 @@ const cors = require("cors");
 const connectDB = require("./config/bdConn");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 // Middleware
 app.use(cors());
@@ -35,4 +35,3 @@ const startServer = async () => {
 };
 
 startServer();
-
