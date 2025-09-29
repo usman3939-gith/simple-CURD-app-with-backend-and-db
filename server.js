@@ -14,6 +14,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" });
+});
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
