@@ -6,7 +6,7 @@ const cors = require("cors");
 const connectDB = require("./config/bdConn");
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors());
