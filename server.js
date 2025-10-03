@@ -14,14 +14,16 @@ if (!PORT) {
 // Middleware
 app.use(require("cors")());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
 
-// Health check route
-app.get("/health", (req, res) => res.json({ status: "ok" }));
+// API routes
+app.use("/api", require("./routes/entry"));
 
-// Frontend route
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+// Serve static Vite build
+app.use(express.static(path.join(__dirname, "frontend", "dist")));
+
+// Catch-all route for SPA
+app.get('/:index.html', (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
 });
 
 // API routes
